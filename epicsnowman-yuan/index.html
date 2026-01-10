@@ -1,0 +1,295 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    
+    <title>堆雪人 - 移动端优化版</title>
+    
+    <link rel="stylesheet" href="icecream/game.css" type="text/css">
+    <link rel="shortcut icon" href="icecream/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="icecream/favicon.png" type="image/png">
+    <link rel="apple-touch-icon-precomposed" href="icecream/favicon.png" type="image/png">
+    
+    <style>
+        /* 移动端优化样式 */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
+            background: #87CEEB;
+        }
+
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #canvas {
+            max-width: 100vw;
+            max-height: 100vh;
+            width: auto;
+            height: auto;
+        }
+
+        /* 虚拟控制器 */
+        .virtual-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            display: none;
+            z-index: 1000;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        @media (pointer: coarse) {
+            .virtual-controls {
+                display: flex;
+            }
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .action-controls {
+            flex-direction: row;
+            gap: 15px;
+        }
+
+        .virtual-btn {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.3);
+            border: 3px solid rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            touch-action: manipulation;
+            user-select: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.1s ease;
+        }
+
+        .virtual-btn:active,
+        .virtual-btn.pressed {
+            background: rgba(255, 255, 255, 0.6);
+            border-color: rgba(255, 255, 255, 0.9);
+            transform: scale(0.95);
+        }
+
+        /* 移除页面底部广告元素 */
+        .page-footer,
+        .page-left {
+            display: none !important;
+        }
+
+        /* 游戏控制按钮 */
+        .game-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            color: white;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+    </style>
+    
+    <script type="text/javascript" src="game.js"></script>
+		
+		<style>
+				#sg-loading-text {
+				width: 70%;
+				left: 15%;
+				bottom: 20px;
+				position: absolute;
+				z-index: 11;
+				display: block;
+			}
+        .page-footer {
+        	  position: fixed;
+        	  right: 0px;
+        	  bottom: 0px;
+        	  display: flex;
+        	  align-items: center;
+        	  padding: 5px;
+        	  color: black;
+        	  background: rgba(255, 255, 255, 0.65);
+        	}
+        	.page-left {
+        	  position: fixed;
+        	  left: 0px;
+        	  bottom: 0px;
+        	  display: flex;
+        	  align-items: center;
+        	  padding: 5px;
+        	  color: black;
+        	  background: rgba(255, 255, 255, 0.65);
+        	}
+        	
+        	.page-footer a {
+        	  display: flex;
+        	  margin-left: 4px;
+        	}
+        	.touxiang{
+        		bottom: 0px;
+        		width:30px;
+        		height:30px;
+        	}
+        </style>
+        	<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script>
+        	<script>LA.init({id:"3NTGVZ69LWpRKm4G",ck:"3NTGVZ69LWpRKm4G"})</script>
+        	<script>
+        	var _hmt = _hmt || [];
+        	(function() {
+        	  var hm = document.createElement("script");
+        	  hm.src = "https://www.baidu.com/s?wd=%E7%8B%97%E5%87%AF%E5%85%8D%E8%B4%B9%E6%BA%90%E7%A0%81";
+        	  var s = document.getElementsByTagName("script")[0]; 
+        	  s.parentNode.insertBefore(hm, s);
+        	})();
+        	</script>
+        	
+        	
+    
+
+</head>
+	
+    <body>
+		<img id="sg-loading-text" src="icecream/spil_text_1.png" />
+		<div id="sg-orient-screen"></div>
+		<div id="sg-loading-screen"></div>
+		<div id="sg-loading-bar-back"><div id="sg-loading-bar"></div></div>
+        <div class="gm4html5_div_class" id="gm4html5_div_id">
+            <canvas id="canvas" width="0" height="0">
+               <p>Your browser doesn't support HTML5 canvas.</p>
+            </canvas>
+        </div>
+		<script type="text/javascript">
+			splash_w = 660;
+			splash_h = 800;
+			bar_img_w = 400;
+			bar_img_h = 44;
+			bar_img_x = (splash_w-bar_img_w)/2;
+			bar_img_y = (splash_h-bar_img_h)/2;
+			canvasobj = document.getElementById("canvas");
+			loadbarobj = document.getElementById("sg-loading-bar");
+			loadbarbackobj = document.getElementById("sg-loading-bar-back");
+			orientobj = document.getElementById("sg-orient-screen");
+			loadingobj = document.getElementById("sg-loading-screen");
+			//SpilGames Init API Start
+			loadingtextobj = document.getElementById("sg-loading-text");
+			loadtextnum = 1;
+			var sg_spilapi = false;
+			var sg_spil_spon_obj = null;
+			var sg_spil_more_obj = null;
+			var sg_spil_cross_obj = null;
+			var sg_spilapi_obj = null;
+			var SpilData = {
+				id: '576742227280292365'
+			};
+			try {
+				GameAPI.loadAPI(function(apiInstance) {
+					sg_spilapi = true;
+					sg_spilapi_obj = apiInstance;
+					//Spil Logo
+					var logoData = apiInstance.Branding.getLogo();
+					if (logoData.image) {
+						sg_spil_spon_obj = document.createElement('img');
+						sg_spil_spon_obj.src = logoData.image;
+						if (sg_spil_spon_obj.addEventListener) {
+							sg_spil_spon_obj.addEventListener('click', logoData.action);
+						} else if (sg_spil_spon_obj.attachEvent) {
+							sg_spil_spon_obj.attachEvent('click', logoData.action);
+						}
+						sg_spil_spon_obj.setAttribute('style','display: block; position: absolute; left: 0px; top: 10px; width: 30%; z-index: 10');
+						document.body.appendChild(sg_spil_spon_obj);
+					}
+					//Spil Moregames
+					var moreData = apiInstance.Branding.getLink('more_games');
+						sg_spil_more_obj = document.createElement('img');
+						sg_spil_more_obj.src = "icecream/but_more.png";
+						if (sg_spil_more_obj.addEventListener) {
+							sg_spil_more_obj.addEventListener('click', moreData.action);
+						} else if (sg_spil_more_obj.attachEvent) {
+							sg_spil_more_obj.attachEvent('click', moreData.action);
+						}
+						sg_spil_more_obj.setAttribute('style','display: none; position: absolute; left: 0px; top: 0px; z-index: 10');
+						document.body.appendChild(sg_spil_more_obj);
+					//Spil Pause/Resume
+					GameAPI.Game.on('pause', function() {
+						gml_Script_gmcallback_pauseon();
+					});
+					GameAPI.Game.on('resume', function() {
+						gml_Script_gmcallback_pauseoff();
+					});
+				}, SpilData);
+			} catch(e) {};
+			function sg_change_loadtext() {
+				if (loadingtextobj) {
+					if (loadtextnum == 4) {
+						loadtextnum = 1;
+					} else {
+						loadtextnum += 1;
+					}
+					loadingtextobj.src = "icecream/spil_text_"+loadtextnum+".png";
+				}
+			}
+			loadintervalid = setInterval(sg_change_loadtext, 4000);
+			//SpilGames Init API End
+			document.addEventListener("touchmove", function (e) { e.preventDefault(); }, false);
+			var Clay = Clay || {};
+		</script>
+        <script type="text/javascript" src="icecream/EpicSnowman.js"></script>
+		
+
+	<footer class="page-footer">
+	  <span>更多游戏👉</span>
+	  <a href="https://ytvz.f2z.cn/yKCKPn" target="_blank">
+		<img class="touxiang"  src="https://www.tfbkw.com/wp-content/uploads/2025/10/20251027131521686-httpweixin.qq_.comrmplhYqMg7EOVNGrUpR90OE.png">
+	  </a>
+	</footer>
+	<footer class="page-left">  
+	  <a href="https://www.tfbkw.com/" target="_blank">
+		<img class="touxiang"  src="https://www.tfbkw.com/wp-content/uploads/2025/10/20251027131521686-httpweixin.qq_.comrmplhYqMg7EOVNGrUpR90OE.png">
+	  </a>
+	  <span>👈游戏源码</span>
+	</footer>    
+</body>
+</html>
